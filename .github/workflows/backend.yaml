@@ -1,0 +1,20 @@
+name: tp5
+on:
+  push:
+    branches:
+      - main
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      name: docker build
+      uses: dockerfile
+      run: docker build
+  railway:
+    runs-on: ubuntu-latest
+    steps:
+      name: Railway Deploy
+      uses: https://tp5-production-9d41.up.railway.app
+      with:
+        railway_api_token: ${{ secrets.RAILWAY_API_TOKEN }}
+        project_id: ${{ secrets.PROJECT_ID }}
