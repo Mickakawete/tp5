@@ -13,7 +13,7 @@ app.use(express.json());
 let tasks = [
 	{ id: 1, title: 'Préparer TP5', description: 'Préparer le TP5 pour les CDA à l\'EKOD, reprendre le TP3 et ajouter un frontend.', completed: true },
 	{ id: 2, title: 'Appeler BILL', description: 'Acheter du pain, du lait et des œufs.', completed: false },
-	{ id: 3, title: 'Bonjour john', description: 'Prendre rendez-vous pour la fuite dans la salle de bain.', completed: false }
+	{ id: 3, title: 'Bonsoir', description: 'Prendre rendez-vous pour la fuite dans la salle de bain.', completed: false }
 ];
 let nextId = 2;
 
