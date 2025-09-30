@@ -4,17 +4,36 @@ on:
     branches:
       - main
 jobs:
-  docker:
+  build-backend:
     runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    env:
+      SVC_ID: 249ec45a-91c5-40b9-87fa-e851621b96ee
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
     steps:
-      name: docker build
-      uses: dockerfile
-      run: docker build
-  railway:
-    runs-on: ubuntu-latest
+      - uses: actions/checkout@v3
+      - run: railway up --service=${{ env.SVC_ID }}
+
+  build-frontend:
+    runs-on: ubuntu-22.04
     steps:
-      name: Railway Deploy
-      uses: https://tp5-production-9d41.up.railway.app
-      with:
-        railway_api_token: ${{ secrets.RAILWAY_API_TOKEN }}
-        project_id: ${{ secrets.PROJECT_ID }}
+      - uses: actions/checkout@v4
+      - name: install
+        run: cd frontend && npm install --production
+
+      - name: build vite
+        run:  cd frontend && npm run build
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './frontend/dist'
+          production-branch: main
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
