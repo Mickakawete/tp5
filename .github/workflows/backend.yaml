@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: "24"
       - name: install
-        run: cd frontend && npm install --production
+        run: cd frontend && npm install 
 
       - name: build
         run:  cd frontend && npm run build
